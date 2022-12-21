@@ -1,8 +1,11 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Objects;
 
 public class iniDuit extends JFrame {
+    public JPanel getMain() {
+        return Main;
+    }
+
     private JPanel Main;
     private JPanel Title;
     private JTextField inputIDR;
@@ -16,80 +19,80 @@ public class iniDuit extends JFrame {
     private JButton exitButton;
     private JPanel ButtonPanel;
     private JButton showButton;
+    private double parseInput;
 
     public iniDuit() {
         itemConvert.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "USD", "RM", "SGD", "EURO", "YEN", "POND" }));
-        buttonClear.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                inputIDR.setText("");
-                outputConvert.setText("");
-            }
+        buttonClear.addActionListener(e -> {
+            inputIDR.setText("");
+            outputConvert.setText("");
         });
-        convertButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
+        convertButton.addActionListener(e -> {
+            try {
+                String boxItems =(String)itemConvert.getSelectedItem();
+                String filter = inputIDR.getText().replace(".", "");
+                String Lfilter = filter.replace(",",".");
+                setParseInput(Double.parseDouble(Lfilter));
 
-                    String boxItems =(String)itemConvert.getSelectedItem();
-                    String filter = inputIDR.getText();
-                    double parseInput = Double.parseDouble(inputIDR.getText());
-                    if (boxItems.equals("USD") && parseInput != 0){
-                        double USDResult = parseInput * 0.00007407407;
-                        outputConvert.setText(String.valueOf(USDResult));
-                    }
-                    else if (boxItems.equals("RM") && parseInput != 0){
-                        double RMResult = parseInput * 0.000333333;
-                        outputConvert.setText(String.valueOf(RMResult));
-                    }else if (boxItems.equals("SGD") && parseInput != 0){
-                        double SGDResult = parseInput * 0.0001;
-                        outputConvert.setText(String.valueOf(SGDResult));
-                    }else if (boxItems.equals("EURO") && parseInput != 0){
-                        double EUROResult = parseInput * 0.0005;
-                        outputConvert.setText(String.valueOf(EUROResult));
-                    }else if (boxItems.equals("YEN") && parseInput != 0){
-                        double YENResult = parseInput * 0.00876;
-                        outputConvert.setText(String.valueOf(YENResult));
-                    }else if (boxItems.equals("POND") && parseInput != 0){
-                        double PONDResult = parseInput * 0.00005;
-                        outputConvert.setText(String.valueOf(PONDResult));
-                    }
-                }catch (Exception error){
-                    if (inputIDR.getText().matches("^.*[,].*$")){
-                        JOptionPane.showMessageDialog(convertButton ,"Gunakan \".\" untuk bilangan pecahan \n" + error);
-                    }else if (inputIDR.getText().matches("[a-zA-Z]+")) {
-                        JOptionPane.showMessageDialog(convertButton, "Gunakan bilangan angka \n" + error);
-                    }else if (inputIDR.getText().isEmpty()){
-                        JOptionPane.showMessageDialog(convertButton, "Masukkan jumlah uang IDR terlebih dahulu \n" + error);
-                    }else if (inputIDR.getText().matches("^.*[~!@#$%^&()_+=\\-{}\\[\\]|:;“’<>?๐฿].*$")){
-                        JOptionPane.showMessageDialog(convertButton, "Tidak bisa mengkonversi spesial karakter \n" + error);
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(convertButton, error);
-                    }
+                if (Objects.equals(boxItems, "USD") && parseInput != 0){
+                    outputConvert.setText(String.valueOf(USDConv()));
+                }
+                else if (Objects.equals(boxItems, "RM") && parseInput != 0){
+                    outputConvert.setText(String.valueOf(RMConv()));
+                }else if (Objects.equals(boxItems, "SGD") && parseInput != 0){
+                    outputConvert.setText(String.valueOf(SGDConv()));
+                }else if (Objects.equals(boxItems, "EURO") && parseInput != 0){
+                    outputConvert.setText(String.valueOf(EUROConv()));
+                }else if (Objects.equals(boxItems, "YEN") && parseInput != 0){
+                    outputConvert.setText(String.valueOf(YENConv()));
+                }else if (Objects.equals(boxItems, "POND") && parseInput != 0){
+                    outputConvert.setText(String.valueOf(PONDConv()));
+                }
+            }catch (Exception error){
+                if (inputIDR.getText().matches("[a-zA-Z]+")) {
+                    JOptionPane.showMessageDialog(convertButton, "Gunakan bilangan angka \n" + error);
+                }else if (inputIDR.getText().isEmpty()){
+                    JOptionPane.showMessageDialog(convertButton, "Masukkan jumlah uang IDR terlebih dahulu \n" + error);
+                }else if (inputIDR.getText().matches("^.*[~!@#$%^&()_+=\\-{}\\[\\]|:;“’<>?๐฿].*$")){
+                    JOptionPane.showMessageDialog(convertButton, "Tidak bisa mengkonversi spesial karakter \n" + error);
+                }
+                else {
+                    JOptionPane.showMessageDialog(convertButton, error);
                 }
             }
         });
-        exitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(100);
-            }
-        });
-        showButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showAll gktau = new showAll();
-                gktau.showAll();
-            }
+        exitButton.addActionListener(e -> System.exit(100));
+        showButton.addActionListener(e -> {
+
+            showAll gktau = new showAll();
+            gktau.setSize(500,500);
+            gktau.setVisible(true);
+            gktau.setContentPane(gktau.getSecond());
+            gktau.getUSDTextField().setText(String.valueOf(USDConv()));
+            gktau.getRMTextField().setText(String.valueOf(RMConv()));
+            gktau.getSGDTextField().setText(String.valueOf(SGDConv()));
+            gktau.getEUROTextField().setText(String.valueOf(EUROConv()));
+            gktau.getYENTextField().setText(String.valueOf(YENConv()));
+            gktau.getPONDTextField().setText(String.valueOf(PONDConv()));
+            dispose();
         });
     }
+    public double getParseInput() {return parseInput;}
+    public void setParseInput(double parseInput) {this.parseInput = parseInput;}
 
+    public double USDConv(){return getParseInput() * 0.00007407407;}
+    public double RMConv(){return getParseInput() * 0.000333333;}
+    public double SGDConv(){return  getParseInput() * 0.0001;}
+    public double EUROConv(){return getParseInput() * 0.0005;}
+    public double YENConv(){return getParseInput() * 0.00876;}
+    public double PONDConv(){return getParseInput() * 0.00005;}
+
+//    public double
     public static void main(String[] args) {
         iniDuit obj = new iniDuit();
         obj.setContentPane(obj.Main);
-        obj.setTitle("Converting Money Application");
         obj.setSize(500,500);
+        obj.setTitle("Converting Money Application");
         obj.setVisible(true);
     }
 

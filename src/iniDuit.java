@@ -68,12 +68,21 @@ public class iniDuit extends JFrame {
             gktau.setSize(500,500);
             gktau.setVisible(true);
             gktau.setContentPane(gktau.getSecond());
-            gktau.getUSDTextField().setText(String.valueOf(USDConv()));
-            gktau.getRMTextField().setText(String.valueOf(RMConv()));
-            gktau.getSGDTextField().setText(String.valueOf(SGDConv()));
-            gktau.getEUROTextField().setText(String.valueOf(EUROConv()));
-            gktau.getYENTextField().setText(String.valueOf(YENConv()));
-            gktau.getPONDTextField().setText(String.valueOf(PONDConv()));
+            if(inputIDR.getText().isEmpty() || inputIDR.getText().equals(" ")){
+                gktau.getUSDTextField().setText("");
+                gktau.getRMTextField().setText("");
+                gktau.getSGDTextField().setText("");
+                gktau.getEUROTextField().setText("");
+                gktau.getYENTextField().setText("");
+                gktau.getPONDTextField().setText("");
+            }else {
+                gktau.getUSDTextField().setText(String.valueOf(USDConv()));
+                gktau.getRMTextField().setText(String.valueOf(RMConv()));
+                gktau.getSGDTextField().setText(String.valueOf(SGDConv()));
+                gktau.getEUROTextField().setText(String.valueOf(EUROConv()));
+                gktau.getYENTextField().setText(String.valueOf(YENConv()));
+                gktau.getPONDTextField().setText(String.valueOf(PONDConv()));
+            }
             dispose();
         });
     }
